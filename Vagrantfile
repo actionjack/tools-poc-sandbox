@@ -12,6 +12,7 @@ Vagrant.configure("2") do |config|
   config.vm.network :public_network, :bridge => bridge
   config.vm.hostname = 'tools-poc.local'
   config.vm.network :forwarded_port, guest: 80, host: 1080
+  config.vm.network :forwarded_port, guest: 8095, host: 8095
   config.vm.network :forwarded_port, guest: 8080, host: 8080
 
   config.vm.provider :virtualbox do |vb|

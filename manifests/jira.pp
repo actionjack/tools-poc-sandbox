@@ -34,7 +34,7 @@ node 'tools-poc' {
 
   include wget
 
-  wget::fetch { 'MySQL java connector for Jira':
+  wget::fetch { 'MySQL java connector':
     source      => 'http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.26/mysql-connector-java-5.1.26.jar',
     destination => '/opt/jira/atlassian-jira-6.1-standalone/lib/mysql-connector-java-5.1.26.jar',
     timeout     => 0,
@@ -42,11 +42,7 @@ node 'tools-poc' {
   }
 
   class { 'mysql::server':
-    override_options => { 'mysqld' => { 'max_connections' => '1024',
-                                        'transaction-isolation' => 'READ-COMMITTED',
-                                        'default-storage-engine' => 'InnoDB'
-    } }
-    # Max_connections is from Jira Doc, Transaction isolation is from Crowd Doc.
+    override_options => { 'mysqld' => { 'max_connections' => '1024' } }
   }
 
   mysql::db { 'jira':
@@ -60,31 +56,6 @@ node 'tools-poc' {
 
   # Jira == end
 
-  # Crowd == Begin
 
-  wget::fetch { 'MySQL java connector for Confluence':
-    source      => 'http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.26/mysql-connector-java-5.1.26.jar',
-    destination => '/opt/atlassian/atlassian-crowd-2.7.0/apache-tomcat/lib/mysql-connector-java-5.1.26.jar',
-    timeout     => 0,
-    verbose     => false,
-  }
-
-  mysql::db { 'crowd':
-    user     => 'crowduser',
-    password => 'mypassword',
-    host     => 'localhost',
-    charset => 'utf8',
-    collate => 'utf8_bin',
-    grant    => ['SELECT','INSERT','UPDATE','DELETE','CREATE','DROP','ALTER','INDEX'],
-  }
-
-  mysql::db { 'crowdiddb':
-    user     => 'crowduser',
-    password => 'mypassword',
-    host     => 'localhost',
-    charset => 'utf8',
-    grant    => ['SELECT','INSERT','UPDATE','DELETE','CREATE','DROP','ALTER','INDEX'],
-  }
-  # Crowd == End
 
 }

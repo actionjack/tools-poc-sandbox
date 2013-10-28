@@ -30,3 +30,5 @@ mod "jenkins",
 mod 'deploy',
    :git => 'git@github.com:mkrakowitzer/puppet-deploy.git'
 
+mod 'wget',
+   :git => 'git@github.com:maestrodev/puppet-wget.git'
